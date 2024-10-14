@@ -1,37 +1,34 @@
 docker-compose up -d
 
-docker exec -it task_app bash
+docker exec -it task_app bash дальше внутри контейнера запускаем:
 
-composer update
+    composer update
 
-php artisan migrate
+    php artisan migrate
 
-php artisan db:seed
+    php artisan db:seed
 
 
 Зарегистрированный пользователь:
 'password' => '12345678',
 'email' => 'test@example.com'
 
-php artisan test - запуск тестов
+php artisan test - запуск тестов делать внутри контейнера docker exec -it task_app bash
 
 передача даты осуществляется в формате даты completion_date=2015-10-04 17:24:43
 
 
-Роуты
+Примеры запросов:
 
-Route::get('/tasks', [ApiController::class, 'getTasks']);
+GET http://localhost:8876/api/tasks?order=asc
 
-Route::get('/task/{task}', [ApiController::class, 'showTask']);
+GET http://localhost:8876/api/task/2
 
-Route::group([
+POST http://localhost:8876/api/task?tile=rename
 
-    'middleware' => 'auth',
-    
-], function ($router) {
+PATCH http://localhost:8876/api/update/31?description=rename&completion_date=2015-10-04 17:24:43
 
-    Route::post('/task', [ApiController::class, 'createTask']);
-    
-    Route::patch('/update/{task}', [ApiController::class, 'updateTask']);
-    
-    Route::delete('/delete/{task}', [ApiController::class, 'deleteTask']);
+DELETE http://localhost:8876/api/delete/2
+
+POST http://localhost:8876/api/auth/login?email=test@example.com&password=12345678
+
