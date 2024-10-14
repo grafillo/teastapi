@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateTaskRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
 {
@@ -30,24 +29,11 @@ class ApiController extends Controller
       }
 
       public function createTask(CreateTaskRequest $request){
-
-//          $validator = Validator::make($request->all(), [
-//              'name' => 'required|string|max:255',
-//              'email' => 'required|email|max:255',
-//          ]);
-//
-//          if ($validator->fails()) {
-//              return response()->json([
-//                  'errors' => $validator->errors(),
-//              ], 422);
-//          }
-//        dd($request);
-
             return Task::create($request->validated());
       }
 
-      public function updateTask(Request $request,Task $task){
-          return $task->update($request->all());
+      public function updateTask(CreateTaskRequest $request,Task $task){
+          return $task->update($request->validated());
       }
 
       public function deleteTask(Task $task){
